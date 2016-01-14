@@ -1,7 +1,6 @@
 
-
 demo 스키마 생성 후,
-demo.hello_info
+demo.hello_info 테이블 생성
 <html>
 <pre>
 CREATE TABLE demo.`hello_info` (
