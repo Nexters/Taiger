@@ -69,6 +69,11 @@ eclipse {
 	}
 }
 
+war {
+	archiveName  'ROOT.war'
+}
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
 }
+
