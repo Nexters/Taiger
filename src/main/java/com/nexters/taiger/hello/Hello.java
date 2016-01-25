@@ -10,7 +10,7 @@ import javax.persistence.*;
 /**
  * Created by BoBinLee on 2016. 1. 14..
  */
-
+//도메인 클래스 
 @Data
 @Entity
 @NoArgsConstructor
@@ -24,4 +24,5 @@ public class Hello {
 	int id;
 	@Column(name = "message")
 	String message;
+	
 }

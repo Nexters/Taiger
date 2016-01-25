@@ -19,7 +19,9 @@ public class InitDataLoader {
 
 	private void saveDummyHello() {
 		Hello hello = new Hello();
-		hello.setMessage("Hello World!");
+		hello.setMessage("Hello world");
+		
 		helloRepository.save(hello);
+		
 	}
 }
