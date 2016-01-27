@@ -18,8 +18,6 @@ public class InitDataLoader {
 		Hello hello = new Hello();
 		hello.setMessage("Hello world");
 		
-		HelloRepository.save(hello);
-		
 	}
 
 }

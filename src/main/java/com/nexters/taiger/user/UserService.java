@@ -11,7 +11,17 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+
 	public UserEntity getUser(int id){
 		return userRepository.findOne(id);
 	}
+	
+
+	
+	public void saveUser(UserEntity userEntity){
+		userRepository.save(userEntity);
+		
+	}
+	
+	
 }
