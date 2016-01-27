@@ -2,7 +2,6 @@ package com.nexters.taiger.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +17,11 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping("/signup")
-	public String register(@RequestBody UserCondition condition){
+	public String register(UserCondition condition){
 		log.info("register : " + condition.toString());
+		
+		UserEntity userEntity = new UserEntity(condition);
+		userService.signup(userEntity);
 		return "success";
 	}
 
