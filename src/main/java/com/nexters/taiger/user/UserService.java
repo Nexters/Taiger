@@ -11,10 +11,23 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+
 	public UserEntity getUser(int id){
 		return userRepository.findOne(id);
 	}
+
 	public void signup(UserEntity userEntity){
 		userRepository.save(userEntity);
 	}
+
+	
+
+	
+	public void saveUser(UserEntity userEntity){
+		userRepository.save(userEntity);
+		
+	}
+	
+	
+
 }
