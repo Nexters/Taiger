@@ -19,7 +19,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/register")
+	@RequestMapping("/signup")
 	public String register(@RequestBody UserCondition condition){
 		log.info("register : " + condition.toString());
 		return "success";
