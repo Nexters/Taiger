@@ -66,13 +66,14 @@ public class UserController {
 	 */
 	@RequestMapping(value="/user/logout", method=RequestMethod.POST)
 	public boolean logout(HttpSession session) {
+		session.setAttribute("login", null);
 		return true;
 	}
 
 	/**
 	 * 가입/연동
 	 * @param condition
-	 * @return
+	 * @return kakaoId
 	 * @throws InvalidAuthException
 	 */
 	@RequestMapping(value="/user/join",method = RequestMethod.POST)
@@ -92,20 +93,19 @@ public class UserController {
 		}
 		UserEntity userEntity = new UserEntity(condition);
 		userService.signup(userEntity);
-		return "success";
+		return String.valueOf(kakaoId);
 	}
 
 	/**
 	 * 마이페이지조회
-	 * @param id
 	 * @return
      */
 	@RequestMapping(value="/user/me", method = RequestMethod.GET)
-	public UserDto getUser(@PathVariable int id){
+	public UserDto getUser(AuthUserDto authUser){
+		int id = authUser.getUserDto().getId();
 		UserEntity user=userService.getUser(id);
 		return dozer.map(user, UserDto.class);
 	}
-
 
 	/**
 	 * 마이페이지저장
@@ -116,12 +116,16 @@ public class UserController {
 	@RequestMapping(value="/user/me", method = RequestMethod.PUT)
 	public UserDto saveMyPage(AuthUserDto authUser, UserDto userDto){
 		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(authUser.getUserDto().getKakaoId()));
+
 		DepartureEntity departureEntity = new DepartureEntity();
 		departureEntity.setId(userDto.getPrimaryDepartureId());
+
 		userEntity.setPrimaryDeparture(departureEntity);
 		userEntity = userService.saveUser(userEntity);
 
-		return dozer.map(userEntity, UserDto.class);
+		userDto = dozer.map(userEntity, UserDto.class);
+		authUser.setUserDto(userDto);
+		return userDto;
 	}
 
 }
