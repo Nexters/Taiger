@@ -16,18 +16,17 @@ public class UserService {
 		return userRepository.findOne(id);
 	}
 
+	public UserEntity getUserByKakaoId(String id){
+		return userRepository.findByKakaoId(id);
+	}
+
 	public void signup(UserEntity userEntity){
 		userRepository.save(userEntity);
 	}
 
-	
-
-	
-	public void saveUser(UserEntity userEntity){
+	public UserEntity saveUser(UserEntity userEntity){
 		userRepository.save(userEntity);
-		
+		return userEntity;
 	}
-	
-	
 
 }
