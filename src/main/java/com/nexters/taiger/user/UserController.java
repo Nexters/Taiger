@@ -2,6 +2,8 @@ package com.nexters.taiger.user;
 
 import com.nexters.taiger.common.AuthUserDto;
 import com.nexters.taiger.common.KakaoService;
+import com.nexters.taiger.common.exception.BadAuthTrialException;
+import com.nexters.taiger.common.exception.BadJoinTrialException;
 import com.nexters.taiger.common.exception.InvalidAuthException;
 import com.nexters.taiger.departure.DepartureEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -37,14 +39,14 @@ public class UserController {
 	 * @throws InvalidAuthException
      */
 	@RequestMapping(value="/user/login", method=RequestMethod.POST)
-	public AuthUserDto login(String accessToken, HttpSession session) throws InvalidAuthException {
+	public AuthUserDto login(String accessToken, HttpSession session) throws BadAuthTrialException {
 		long kakaoId = kakaoService.isValidAccessToken(accessToken);
 		AuthUserDto authUser = new AuthUserDto();
 		authUser.setLoginDate(new Date());
 		UserDto userDto = new UserDto();
 		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(kakaoId));
 		if(userEntity == null) {
-			throw new InvalidAuthException();
+			throw new BadAuthTrialException();
 		}
 
 		if(!userEntity.getKakaoToken().equals(accessToken)) {
@@ -74,7 +76,7 @@ public class UserController {
 	 * @throws InvalidAuthException
 	 */
 	@RequestMapping(value="/user/join",method = RequestMethod.POST)
-	public String register(UserCondition condition) throws InvalidAuthException {
+	public String register(UserCondition condition) throws InvalidAuthException, BadJoinTrialException {
 		log.info("signup : " + condition.toString());
 		long kakaoId = kakaoService.isValidAccessToken(condition.getKakaoToken());
 		if(kakaoId != -1) {
@@ -86,7 +88,7 @@ public class UserController {
 			userEntity.setKakaoId(String.valueOf(kakaoId));
 			userService.signup(userEntity);
 		} else {
-			throw new InvalidAuthException();
+			throw new BadJoinTrialException();
 		}
 		UserEntity userEntity = new UserEntity(condition);
 		userService.signup(userEntity);
@@ -115,7 +117,7 @@ public class UserController {
 	public UserDto saveMyPage(AuthUserDto authUser, UserDto userDto){
 		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(authUser.getUserDto().getKakaoId()));
 		DepartureEntity departureEntity = new DepartureEntity();
-		departureEntity.setId(userDto.getPrimaryDeparture().getId());
+		departureEntity.setId(userDto.getPrimaryDepartureId());
 		userEntity.setPrimaryDeparture(departureEntity);
 		userEntity = userService.saveUser(userEntity);
 

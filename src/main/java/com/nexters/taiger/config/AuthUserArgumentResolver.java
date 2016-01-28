@@ -1,9 +1,9 @@
 package com.nexters.taiger.config;
 
 import com.nexters.taiger.common.AuthUserDto;
+import com.nexters.taiger.common.exception.InvalidAuthException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -31,28 +31,14 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 			WebDataBinderFactory binderFactory
 	) throws Exception {
 		String parameterName = "login";
-		HttpServletRequest httprequest = (HttpServletRequest) webRequest
+		HttpServletRequest httpRequest = (HttpServletRequest) webRequest
 				.getNativeRequest();
-		HttpSession session = httprequest.getSession(false);
+		HttpSession session = httpRequest.getSession(false);
 		Object result = null;
-		if (session != null) {
-			result = session.getAttribute(parameterName);
+		if (session != null && (result = session.getAttribute(parameterName)) != null) {
+			return result;
+		} else {
+			throw new InvalidAuthException();
 		}
-
-		return result;
 	}
-
-	protected void raiseMissingParameterException(String paramName,
-												  Class<?> paramType) throws Exception {
-		throw new IllegalStateException("Missing parameter '" + paramName
-				+ "' of type [" + paramType.getName() + "]");
-	}
-
-	protected void raiseSessionRequiredException(String paramName,
-												 Class<?> paramType) throws Exception {
-		throw new HttpSessionRequiredException(
-				"No HttpSession found for resolving parameter '" + paramName
-						+ "' of type [" + paramType.getName() + "]");
-	}
-
 }

@@ -31,7 +31,7 @@ public class MeetingController {
 	}
 
 	/**
-	 *
+	 * 미팅생성
 	 * @param authUser
 	 * @param meetingDto
      * @return
@@ -47,7 +47,7 @@ public class MeetingController {
 	 * @param authUser
 	 * @param meetingDto
      */
-	@RequestMapping(value="/meeting",method =RequestMethod.POST)
+	@RequestMapping(value="/meeting",method =RequestMethod.DELETE)
 	public MeetingDto deleteMeeting(AuthUserDto authUser, @RequestBody MeetingDto meetingDto){
 		return null;
 	}
