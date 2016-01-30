@@ -40,7 +40,6 @@ public class UserController {
 	public AuthResultDto login(String kakaoToken, HttpServletRequest request) throws BadAuthTrialException {
 		String ipAddress = request.getRemoteAddr();
 		String accessToken = authService.login(kakaoToken, ipAddress);
-
 		return new AuthResultDto(accessToken, ipAddress, new Date());
 	}
 
@@ -61,7 +60,7 @@ public class UserController {
 	 * @throws BadAuthTrialException
      */
 	@RequestMapping(value="/user/register",method = RequestMethod.POST)
-	public AuthResultDto registUser(@RequestBody UserCondition condition, HttpServletRequest request) throws BadJoinTrialException, BadAuthTrialException {
+	public AuthResultDto registUser(@RequestParam UserCondition condition, HttpServletRequest request) throws BadJoinTrialException, BadAuthTrialException {
 		String ipAddress = request.getRemoteAddr();
 		authService.register(condition);
 		String accessToken = authService.login(condition.getKakaoToken(), ipAddress);
@@ -75,7 +74,7 @@ public class UserController {
 	@RequestMapping(value="/user/me", method = RequestMethod.GET)
 	public UserDto getUser(AccessTokenDto authUser){
 		int id = authUser.getId();
-		UserEntity user=userService.getUser(id);
+		UserEntity user = userService.getUser(id);
 		return dozer.map(user, UserDto.class);
 	}
 
