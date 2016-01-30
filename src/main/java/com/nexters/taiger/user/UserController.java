@@ -77,21 +77,21 @@ public class UserController {
 	 * @throws InvalidAuthException
 	 */
 	@RequestMapping(value="/user/join",method = RequestMethod.POST)
-	public String register(UserCondition condition) throws InvalidAuthException, BadJoinTrialException {
-		log.info("signup : " + condition.toString());
-		long kakaoId = kakaoService.isValidAccessToken(condition.getKakaoToken());
+	public String register(UserDto user) throws InvalidAuthException, BadJoinTrialException {
+		log.info("signup : " + user.toString());
+		long kakaoId = kakaoService.isValidAccessToken(user.getKakaoToken());
 		if(kakaoId != -1) {
 			UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(kakaoId));
-			Map<String, Object> me = kakaoService.me(condition.getKakaoToken());
+			Map<String, Object> me = kakaoService.me(user.getKakaoToken());
 
 			userEntity.setName((String) me.get("nickname"));
-			userEntity.setKakaoToken(condition.getKakaoToken());
+			userEntity.setKakaoToken(user.getKakaoToken());
 			userEntity.setKakaoId(String.valueOf(kakaoId));
 			userService.signup(userEntity);
 		} else {
 			throw new BadJoinTrialException();
 		}
-		UserEntity userEntity = new UserEntity(condition);
+		UserEntity userEntity = new UserEntity(user);
 		userService.signup(userEntity);
 		return String.valueOf(kakaoId);
 	}
