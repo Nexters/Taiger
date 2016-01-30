@@ -1,19 +1,17 @@
 package com.nexters.taiger.user;
 
-import com.nexters.taiger.common.AuthUserDto;
-import com.nexters.taiger.common.KakaoService;
+import com.nexters.taiger.common.AccessTokenDto;
+import com.nexters.taiger.common.AuthResultDto;
+import com.nexters.taiger.common.AuthService;
 import com.nexters.taiger.common.exception.BadAuthTrialException;
 import com.nexters.taiger.common.exception.BadJoinTrialException;
-import com.nexters.taiger.common.exception.InvalidAuthException;
-import com.nexters.taiger.departure.DepartureEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Created on Baek on 2016. 1. 23...
@@ -29,71 +27,45 @@ public class UserController {
 	private DozerBeanMapper dozer;
 
 	@Autowired
-	private KakaoService kakaoService;
+	private AuthService authService;
 
 	/**
 	 * 로그인
-	 * @param accessToken
-	 * @param session
+	 * @param kakaoToken
+	 * @param request
 	 * @return
-	 * @throws InvalidAuthException
+	 * @throws BadAuthTrialException
      */
 	@RequestMapping(value="/user/login", method=RequestMethod.POST)
-	public AuthUserDto login(String accessToken, HttpSession session) throws BadAuthTrialException {
-		long kakaoId = kakaoService.isValidAccessToken(accessToken);
-		AuthUserDto authUser = new AuthUserDto();
-		authUser.setLoginDate(new Date());
-		UserDto userDto = new UserDto();
-		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(kakaoId));
-		if(userEntity == null) {
-			throw new BadAuthTrialException();
-		}
+	public AuthResultDto login(String kakaoToken, HttpServletRequest request) throws BadAuthTrialException {
+		String ipAddress = request.getRemoteAddr();
+		String accessToken = authService.login(kakaoToken, ipAddress);
 
-		if(!userEntity.getKakaoToken().equals(accessToken)) {
-			userEntity.setKakaoToken(accessToken);
-			userService.saveUser(userEntity);
-		}
-
-		dozer.map(userEntity, userDto);
-		authUser.setUserDto(userDto);
-		session.setAttribute("login", authUser);
-
-		return authUser;
+		return new AuthResultDto(accessToken, ipAddress, new Date());
 	}
 
 	/**
 	 * 로그아웃
 	 */
 	@RequestMapping(value="/user/logout", method=RequestMethod.POST)
-	public boolean logout(HttpSession session) {
-		session.setAttribute("login", null);
-		return true;
+	public void revmoeSession(@RequestHeader("AccessToken") String accessToken, AccessTokenDto accessTokenDto) {
+		authService.logout(accessToken);
 	}
 
 	/**
-	 * 가입/연동
+	 * 회원가입
 	 * @param condition
-	 * @return kakaoId
-	 * @throws InvalidAuthException
-	 */
-	@RequestMapping(value="/user/join",method = RequestMethod.POST)
-	public String register(UserCondition condition) throws InvalidAuthException, BadJoinTrialException {
-		log.info("signup : " + condition.toString());
-		long kakaoId = kakaoService.isValidAccessToken(condition.getKakaoToken());
-		if(kakaoId != -1) {
-			UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(kakaoId));
-			Map<String, Object> me = kakaoService.me(condition.getKakaoToken());
-
-			userEntity.setName((String) me.get("nickname"));
-			userEntity.setKakaoToken(condition.getKakaoToken());
-			userEntity.setKakaoId(String.valueOf(kakaoId));
-			userService.signup(userEntity);
-		} else {
-			throw new BadJoinTrialException();
-		}
-		UserEntity userEntity = new UserEntity(condition);
-		userService.signup(userEntity);
-		return String.valueOf(kakaoId);
+	 * @param request
+	 * @return
+	 * @throws BadJoinTrialException
+	 * @throws BadAuthTrialException
+     */
+	@RequestMapping(value="/user/register",method = RequestMethod.POST)
+	public AuthResultDto registUser(@RequestBody UserCondition condition, HttpServletRequest request) throws BadJoinTrialException, BadAuthTrialException {
+		String ipAddress = request.getRemoteAddr();
+		authService.register(condition);
+		String accessToken = authService.login(condition.getKakaoToken(), ipAddress);
+		return new AuthResultDto(accessToken, ipAddress, new Date());
 	}
 
 	/**
@@ -101,31 +73,21 @@ public class UserController {
 	 * @return
      */
 	@RequestMapping(value="/user/me", method = RequestMethod.GET)
-	public UserDto getUser(AuthUserDto authUser){
-		int id = authUser.getUserDto().getId();
+	public UserDto getUser(AccessTokenDto authUser){
+		int id = authUser.getId();
 		UserEntity user=userService.getUser(id);
 		return dozer.map(user, UserDto.class);
 	}
 
 	/**
 	 * 마이페이지저장
-	 * @param authUser
+	 * @param accessTokenDto
 	 * @param userDto
      * @return
      */
 	@RequestMapping(value="/user/me", method = RequestMethod.PUT)
-	public UserDto saveMyPage(AuthUserDto authUser, UserDto userDto){
-		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(authUser.getUserDto().getKakaoId()));
-
-		DepartureEntity departureEntity = new DepartureEntity();
-		departureEntity.setId(userDto.getPrimaryDepartureId());
-
-		userEntity.setPrimaryDeparture(departureEntity);
-		userEntity = userService.saveUser(userEntity);
-
-		userDto = dozer.map(userEntity, UserDto.class);
-		authUser.setUserDto(userDto);
-		return userDto;
+	public void saveUser(AccessTokenDto accessTokenDto, @RequestBody UserDto userDto){
+		userService.saveUser(userDto);
 	}
 
 }

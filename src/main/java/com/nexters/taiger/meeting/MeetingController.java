@@ -1,7 +1,7 @@
 package com.nexters.taiger.meeting;
 
-import com.nexters.taiger.common.AuthUserDto;
-import com.nexters.taiger.common.SortType;
+import com.nexters.taiger.common.AccessTokenDto;
+import com.nexters.taiger.common.constant.UserSortType;
 import com.nexters.taiger.user.UserDto;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class MeetingController {
 	 * @param sortType
      */
 	@RequestMapping(value="/meetings")
-	public List<MeetingDto> getMeetings(AuthUserDto authUser, SortType sortType) {
+	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
 		return null;
 	}
 
@@ -37,7 +37,7 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.POST)
-	public MeetingDto createMeeting(AuthUserDto authUser, @RequestBody MeetingDto meetingDto){
+	public MeetingDto createMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
 		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
 		return null;
 	}
@@ -48,7 +48,7 @@ public class MeetingController {
 	 * @param meetingDto
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.DELETE)
-	public MeetingDto deleteMeeting(AuthUserDto authUser, @RequestBody MeetingDto meetingDto){
+	public MeetingDto deleteMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
 		return null;
 	}
 
@@ -59,7 +59,7 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting/{meetingId}", method=RequestMethod.POST)
-	public MeetingDto enterMeeting(AuthUserDto authUser, @PathVariable long meetingId){
+	public MeetingDto enterMeeting(AccessTokenDto authUser, @PathVariable long meetingId){
 		return null;
 	}
 
@@ -70,7 +70,7 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting/{meetingId}/users", method=RequestMethod.GET)
-	public List<UserDto> getMeetingUsers(AuthUserDto authUser, @PathVariable long meetingId){
+	public List<UserDto> getMeetingUsers(AccessTokenDto authUser, @PathVariable long meetingId){
 		return null;
 	}
 
@@ -81,7 +81,7 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/join", method=RequestMethod.POST)
-	public List<UserDto> joinMeetingUser(AuthUserDto authUser, @PathVariable long meetingId){
+	public List<UserDto> joinMeetingUser(AccessTokenDto authUser, @PathVariable long meetingId){
 		return null;
 	}
 
@@ -92,7 +92,7 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/join", method=RequestMethod.DELETE)
-	public List<UserDto> cancelMeetingUser(AuthUserDto authUser, @PathVariable long meetingId){
+	public List<UserDto> cancelMeetingUser(AccessTokenDto authUser, @PathVariable long meetingId){
 		return null;
 	}
 
@@ -103,7 +103,7 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comments", method=RequestMethod.GET)
-	public List<MeetingCommentDto> getMeetingComments(AuthUserDto authUser, @PathVariable long meetingId){
+	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId){
 		return null;
 	}
 
@@ -114,7 +114,7 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comment", method=RequestMethod.POST)
-	public List<MeetingCommentDto> getMeetingComments(AuthUserDto authUser, @PathVariable long meetingId, @RequestBody MeetingCommentDto meetingCommentDto){
+	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId, @RequestBody MeetingCommentDto meetingCommentDto){
 		return null;
 	}
 
@@ -125,7 +125,7 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comment/{commentId}", method=RequestMethod.DELETE)
-	public List<MeetingCommentDto> deleteMeetingComments(AuthUserDto authUser, @PathVariable long meetingId, @PathVariable long commentId){
+	public List<MeetingCommentDto> deleteMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId, @PathVariable long commentId){
 		return null;
 	}
 

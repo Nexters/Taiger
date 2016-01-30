@@ -29,7 +29,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(context.getBean(AuthUserArgumentResolver.class));
+        argumentResolvers.add(context.getBean(AccessTokenArgumentResolver.class));
     }
 
     @Override

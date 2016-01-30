@@ -79,11 +79,14 @@ public class KakaoService {
         return -1;
     }
 
-
-
+    /**
+     * 카카오 AccessToken 유효성 체크
+     * @param accessToken
+     * @return
+     */
     public long isValidAccessToken(String accessToken) {
         try {
-            Map response = restTemplate.postForObject("https://kapi.kakao.com/v1/user/access_token_info", prepareHeader(null, accessToken), Map.class);
+            Map response = restTemplate.postForObject(KAKAO_API_URL + "/user/access_token_info", prepareHeader(null, accessToken), Map.class);
             Long id = (Long) response.get("id");
             Long expiresInMillis = (Long) response.get("expiresInMillis");
 
@@ -91,9 +94,10 @@ public class KakaoService {
                 throw new Exception("Expired Token");
             }
             return id;
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
+
         return -1;
     }
 }

@@ -20,7 +20,6 @@ import java.util.Set;
 public class UserEntity implements java.io.Serializable {
 
 	public UserEntity(UserCondition condition) {
-		// TODO Auto-generated constructor stub
 		this.setKakaoId(condition.getKakaoId());
 		this.setName(condition.getName());
 		this.setGender(condition.getGender());
