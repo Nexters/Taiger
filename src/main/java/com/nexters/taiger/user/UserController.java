@@ -77,21 +77,21 @@ public class UserController {
 	 * @throws InvalidAuthException
 	 */
 	@RequestMapping(value="/user/join",method = RequestMethod.POST)
-	public String register(UserDto user) throws InvalidAuthException, BadJoinTrialException {
-		log.info("signup : " + user.toString());
-		long kakaoId = kakaoService.isValidAccessToken(user.getKakaoToken());
+	public String register(UserCondition userCondition) throws InvalidAuthException, BadJoinTrialException {
+		log.info("signup : " + userCondition.toString());
+		long kakaoId = kakaoService.isValidAccessToken(userCondition.getKakaoToken());
 		if(kakaoId != -1) {
 			UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(kakaoId));
-			Map<String, Object> me = kakaoService.me(user.getKakaoToken());
+			Map<String, Object> me = kakaoService.me(userCondition.getKakaoToken());
 
 			userEntity.setName((String) me.get("nickname"));
-			userEntity.setKakaoToken(user.getKakaoToken());
+			userEntity.setKakaoToken(userCondition.getKakaoToken());
 			userEntity.setKakaoId(String.valueOf(kakaoId));
 			userService.signup(userEntity);
 		} else {
 			throw new BadJoinTrialException();
 		}
-		UserEntity userEntity = new UserEntity(user);
+		UserEntity userEntity = new UserEntity(userCondition);
 		userService.signup(userEntity);
 		return String.valueOf(kakaoId);
 	}
@@ -114,16 +114,16 @@ public class UserController {
      * @return
      */
 	@RequestMapping(value="/user/me", method = RequestMethod.PUT)
-	public UserDto saveMyPage(AuthUserDto authUser, UserDto userDto){
+	public UserDto saveMyPage(AuthUserDto authUser, UserCondition userCondition){
 		UserEntity userEntity = userService.getUserByKakaoId(String.valueOf(authUser.getUserDto().getKakaoId()));
 
 		DepartureEntity departureEntity = new DepartureEntity();
-		departureEntity.setId(userDto.getPrimaryDepartureId());
+		departureEntity.setId(userCondition.getPrimaryDepartureId());
 
 		userEntity.setPrimaryDeparture(departureEntity);
 		userEntity = userService.saveUser(userEntity);
 
-		userDto = dozer.map(userEntity, UserDto.class);
+		UserDto userDto = dozer.map(userEntity, UserDto.class);
 		authUser.setUserDto(userDto);
 		return userDto;
 	}
