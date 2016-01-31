@@ -47,7 +47,7 @@ public class UserController {
 	 * 로그아웃
 	 */
 	@RequestMapping(value="/user/logout", method=RequestMethod.POST)
-	public void revmoeSession(@RequestHeader("AccessToken") String accessToken, AccessTokenDto accessTokenDto) {
+	public void logout(@RequestHeader("AccessToken") String accessToken, AccessTokenDto accessTokenDto) {
 		authService.logout(accessToken);
 	}
 
@@ -60,7 +60,7 @@ public class UserController {
 	 * @throws BadAuthTrialException
      */
 	@RequestMapping(value="/user/register",method = RequestMethod.POST)
-	public AuthResultDto registUser(@RequestParam UserCondition condition, HttpServletRequest request) throws BadJoinTrialException, BadAuthTrialException {
+	public AuthResultDto register(@RequestParam UserCondition condition, HttpServletRequest request) throws BadJoinTrialException, BadAuthTrialException {
 		String ipAddress = request.getRemoteAddr();
 		authService.register(condition);
 		String accessToken = authService.login(condition.getKakaoToken(), ipAddress);
