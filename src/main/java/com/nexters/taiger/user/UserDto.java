@@ -14,4 +14,5 @@ public class UserDto {
 	private Integer meetingCount;
 	private Integer reliability;
 	private Integer primaryDepartureId;
+	private String createdBy;
 }
