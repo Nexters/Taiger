@@ -19,12 +19,11 @@ import java.util.Set;
 @Table(name = "user", catalog = "taiger")
 public class UserEntity implements java.io.Serializable {
 
-	public UserEntity(UserCondition userCondition) {
-		// TODO Auto-generated constructor stub
-		this.setKakaoId(userCondition.getKakaoId());
-		this.setName(userCondition.getName());
-		this.setGender(userCondition.getGender());
-		this.setAge(userCondition.getAge());
+	public UserEntity(UserCondition condition) {
+		this.setKakaoId(condition.getKakaoId());
+		this.setName(condition.getName());
+		this.setGender(condition.getGender());
+		this.setAge(condition.getAge());
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package com.nexters.taiger.departure;
 
-import com.nexters.taiger.common.AuthUserDto;
+import com.nexters.taiger.common.AccessTokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ public class DepartureController {
 	 * @return
      */
 	@RequestMapping("/departures")
-	public List<DepartureDto> getDepartures(AuthUserDto authUser) {
+	public List<DepartureDto> getDepartures(AccessTokenDto authUser) {
 		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package com.nexters.taiger.user;
 
+import com.nexters.taiger.departure.DepartureEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,25 +9,31 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+
 	@Autowired
 	private UserRepository userRepository;
 
-
+	/**
+	 * 사용자 조회
+	 * @param id
+	 * @return
+     */
 	public UserEntity getUser(int id){
 		return userRepository.findOne(id);
 	}
 
-	public UserEntity getUserByKakaoId(String id){
-		return userRepository.findByKakaoId(id);
-	}
 
-	public void signup(UserEntity userEntity){
+	/**
+	 * 마이페이지 저장
+	 * @param userDto
+     */
+	public void saveUser(UserDto userDto) {
+		UserEntity userEntity = userRepository.findByKakaoId(String.valueOf(userDto.getKakaoId()));
+
+		DepartureEntity departureEntity = new DepartureEntity();
+		departureEntity.setId(userDto.getPrimaryDepartureId());
+
+		userEntity.setPrimaryDeparture(departureEntity);
 		userRepository.save(userEntity);
 	}
-
-	public UserEntity saveUser(UserEntity userEntity){
-		userRepository.save(userEntity);
-		return userEntity;
-	}
-
 }
