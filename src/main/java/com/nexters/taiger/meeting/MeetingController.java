@@ -25,7 +25,7 @@ public class MeetingController {
 	 * @param authUser
 	 * @param sortType
      */
-	@RequestMapping(value="/meetings")
+	@RequestMapping(value="/meetings",method =RequestMethod.GET)
 	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
 		return null;
 	}
@@ -39,7 +39,12 @@ public class MeetingController {
 	@RequestMapping(value="/meeting",method =RequestMethod.POST)
 	public MeetingDto createMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
 		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
-		return null;
+		
+		meetingService.createMeeting(meetingEntity);
+		meetingDto= dozer.map(meetingEntity, MeetingDto.class);
+		
+		
+		return meetingDto;
 	}
 
 	/**
@@ -49,7 +54,11 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.DELETE)
 	public MeetingDto deleteMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
-		return null;
+		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
+		
+		meetingService.deleteMeeting(meetingEntity);
+		
+		return meetingDto;
 	}
 
 	/**
