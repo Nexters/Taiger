@@ -24,8 +24,8 @@ public class MeetingService {
 	}
 	
 	
-    public void deleteMeeting(long meetingId){
-		 meetingRepository.delete((int)meetingId);
+    public void deleteMeeting(MeetingEntity meetingEntity){
+		 meetingRepository.delete(meetingEntity);
 	 }
 	
 	public List<MeetingEntity> getMeetings(UserSortType sortType){
