@@ -22,6 +22,9 @@ public class MeetingService {
 	public void createMeeting(MeetingEntity meetingEntity){
 		meetingRepository.save(meetingEntity);
 	}
+	public void deleteMeeting(MeetingEntity meetingEntity){
+		meetingRepository.delete(meetingEntity);
+	}
 	
 	
     public void deleteMeeting(long meetingId){
