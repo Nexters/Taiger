@@ -7,6 +7,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.nexters.taiger.common.util.*;
+
 import java.util.List;
 
 /**
@@ -25,11 +27,11 @@ public class MeetingController {
 	 * @param authUser
 	 * @param sortType
      */
-	@RequestMapping(value="/meetings",method =RequestMethod.GET)
+	@RequestMapping(value="/meetings")
 	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
-	   MeetingEntity meetingEntity=meetingService.getMeetings(sortType);
+	   List<MeetingEntity> meetingEntity=meetingService.getMeetings(sortType);
 		
-		List<MeetingDto> meetingDto=dozer.map(meetingEntity, MeetingDto.class);
+		List<MeetingDto> meetingDto=DozerHelper.map(dozer, meetingEntity, MeetingDto.class);
 		return meetingDto;
 	}
 
@@ -37,17 +39,13 @@ public class MeetingController {
 	 * 미팅생성
 	 * @param authUser
 	 * @param meetingDto
+	 * 
      * @return
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.POST)
 	public MeetingDto createMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
 		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
-		
-		meetingService.createMeeting(meetingEntity);
-		meetingDto= dozer.map(meetingEntity, MeetingDto.class);
-		
-		
-		return meetingDto;
+		return null;
 	}
 
 	/**
@@ -57,11 +55,7 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.DELETE)
 	public MeetingDto deleteMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
-		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
-		
-		meetingService.deleteMeeting(meetingEntity);
-		
-		return meetingDto;
+		return null;
 	}
 
 	/**
