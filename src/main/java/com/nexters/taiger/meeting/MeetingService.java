@@ -1,8 +1,11 @@
 package com.nexters.taiger.meeting;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nexters.taiger.common.constant.UserSortType;
 import com.nexters.taiger.user.UserEntity;
 
 /**
@@ -18,6 +21,16 @@ public class MeetingService {
 	
 	public void createMeeting(MeetingEntity meetingEntity){
 		meetingRepository.save(meetingEntity);
+	}
+	
+	
+    public void deleteMeeting(long meetingId){
+		 meetingRepository.delete((int)meetingId);
+	 }
+	
+	public List<MeetingEntity> getMeetings(UserSortType sortType){
+		List<MeetingEntity> meeting=meetingRepository.findByDepartureIdByUserSortTypeDesc(sortType);
+		return null;
 	}
 	
 	

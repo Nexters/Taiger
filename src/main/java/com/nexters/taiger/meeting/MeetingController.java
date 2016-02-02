@@ -27,7 +27,10 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meetings")
 	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
-		return null;
+	   MeetingEntity meetingEntity=meetingService.getMeetings(sortType);
+		
+		List<MeetingDto> meetingDto=dozer.map(meetingEntity, MeetingDto.class);
+		return meetingDto;
 	}
 
 	/**
