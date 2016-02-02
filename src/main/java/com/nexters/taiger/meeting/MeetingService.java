@@ -29,7 +29,7 @@ public class MeetingService {
 	 }
 	
 	public List<MeetingEntity> getMeetings(UserSortType sortType){
-		List<MeetingEntity> meeting=meetingRepository.findAllOrderByCreatedAtDesc(createdAt, sortType);
+		List<MeetingEntity> meeting=meetingRepository.findAllOrderByCreatedAtDesc(createAt)
 		return null;
 	}
 	
