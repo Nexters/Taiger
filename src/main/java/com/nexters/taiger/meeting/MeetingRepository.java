@@ -17,5 +17,7 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 	
 	//List<MeetingEntity> findAllOrderByCreatedAtAndDesc(UserSortType sortType);
 	
+	void deleteByMeetingIdAndUserId(MeetingEntity meetingEntity);
+
 	
 }

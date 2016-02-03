@@ -1,5 +1,7 @@
 package com.nexters.taiger.meeting;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface MeetingCommentRepository extends CrudRepository<MeetingCommentEntity, Integer> {
 
 	
-	
+	List<MeetingCommentDto> findAllByMeetingId(int meetingId);
+	void deleteByIdAndMeetingId(int id,int meetingId);
 }

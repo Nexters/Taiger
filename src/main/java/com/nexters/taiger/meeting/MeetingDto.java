@@ -19,4 +19,7 @@ public class MeetingDto {
 	private String destName;
 	private Integer costType;
 	private Date createdAt;
+	private Double depLat;
+	private Double depLng;
+	private String depName;
 }

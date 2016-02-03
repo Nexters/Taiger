@@ -1,13 +1,16 @@
 package com.nexters.taiger.meeting;
 
+import java.util.List;
+
 import com.nexters.taiger.common.AccessTokenDto;
 import com.nexters.taiger.common.constant.UserSortType;
 import com.nexters.taiger.user.UserDto;
+
+
+
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created on Baek on 2016. 1. 23...
@@ -27,6 +30,7 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meetings",method =RequestMethod.GET)
 	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
+		
 		return null;
 	}
 
@@ -68,7 +72,11 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting/{meetingId}", method=RequestMethod.POST)
-	public MeetingDto enterMeeting(AccessTokenDto authUser, @PathVariable long meetingId){
+	public MeetingDto enterMeeting(AccessTokenDto authUser, @PathVariable int meetingId){
+		
+		int userId=authUser.getId();
+		meetingService.enterMeeting(userId, meetingId);
+		
 		return null;
 	}
 
@@ -79,8 +87,10 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting/{meetingId}/users", method=RequestMethod.GET)
-	public List<UserDto> getMeetingUsers(AccessTokenDto authUser, @PathVariable long meetingId){
-		return null;
+	public List<UserDto> getMeetingUsers(AccessTokenDto authUser, @PathVariable int meetingId){
+		
+		List<UserDto> users=meetingService.getMeetingUsers(meetingId);
+		return users;
 	}
 
 	/**
@@ -101,7 +111,10 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/join", method=RequestMethod.DELETE)
-	public List<UserDto> cancelMeetingUser(AccessTokenDto authUser, @PathVariable long meetingId){
+	public List<UserDto> cancelMeetingUser(AccessTokenDto authUser, @PathVariable int meetingId){
+		int userId=authUser.getId();
+		
+		meetingService.cancelMeetingUser(userId, meetingId);
 		return null;
 	}
 
@@ -112,8 +125,10 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comments", method=RequestMethod.GET)
-	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId){
-		return null;
+	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable int meetingId){
+		
+		List<MeetingCommentDto> list=meetingService.getMeetingComments(meetingId);
+		return list;
 	}
 
 	/**
@@ -123,8 +138,14 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comment", method=RequestMethod.POST)
-	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId, @RequestBody MeetingCommentDto meetingCommentDto){
-		return null;
+	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable int meetingId, @RequestBody MeetingCommentDto meetingCommentDto){
+		
+		meetingCommentDto.setMeetingId(meetingId);
+		MeetingCommentEntity entity=dozer.map(meetingCommentDto, MeetingCommentEntity.class);
+		
+		List<MeetingCommentDto> list=meetingService.saveComment(meetingId,entity);
+		
+		return list;
 	}
 
 	/**
@@ -134,8 +155,10 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/comment/{commentId}", method=RequestMethod.DELETE)
-	public List<MeetingCommentDto> deleteMeetingComments(AccessTokenDto authUser, @PathVariable long meetingId, @PathVariable long commentId){
-		return null;
+	public List<MeetingCommentDto> deleteMeetingComments(AccessTokenDto authUser, @PathVariable int meetingId, @PathVariable int commentId){
+		
+		List<MeetingCommentDto> list=meetingService.deleteMeetingComments(commentId,meetingId);
+		return list;
 	}
 
 }

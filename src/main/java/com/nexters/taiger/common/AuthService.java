@@ -105,7 +105,7 @@ public class AuthService {
 	private String makeAccessToken(UserEntity userEntity, String ipAddress) throws JsonProcessingException, CryptoException {
 		AccessTokenDto accessTokenDto = new AccessTokenDto(userEntity.getId(), userEntity.getKakaoId(), userEntity.getKakaoToken(), userEntity.getName(), ipAddress, new Date());
 		String accessTokenJson = objectMapper.writeValueAsString(accessTokenDto);
-		String accessToken = AES256.decode(secretKey, accessTokenJson);
+		String accessToken = AES256.encode(secretKey, accessTokenJson);
 		tokenCache.put(accessToken, accessTokenDto);
 		return accessToken;
 	}
