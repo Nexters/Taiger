@@ -42,10 +42,10 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meeting",method =RequestMethod.POST)
 	public MeetingDto createMeeting(AccessTokenDto authUser, @RequestBody MeetingDto meetingDto){
-		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
 		
-		meetingService.createMeeting(meetingEntity);
-		meetingDto= dozer.map(meetingEntity, MeetingDto.class);
+		
+		meetingService.createMeeting(meetingDto);
+		
 		
 		
 		return meetingDto;
@@ -72,7 +72,7 @@ public class MeetingController {
      * @return
      */
 	@RequestMapping(value="/meeting/{meetingId}", method=RequestMethod.POST)
-	public MeetingDto enterMeeting(AccessTokenDto authUser, @PathVariable int meetingId){
+	public MeetingDto enterMeeting(AccessTokenDto authUser,@PathVariable int meetingId){
 		
 		int userId=authUser.getId();
 		meetingService.enterMeeting(userId, meetingId);

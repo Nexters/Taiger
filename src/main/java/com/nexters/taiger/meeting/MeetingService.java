@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.nexters.taiger.common.constant.UserSortType;
 import com.nexters.taiger.common.util.DozerHelper;
+import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.user.UserDto;
 import com.nexters.taiger.user.UserEntity;
 
@@ -29,7 +30,19 @@ public class MeetingService {
 	@Autowired
 	private DozerBeanMapper dozer;
 	
-	public void createMeeting(MeetingEntity meetingEntity){
+	public void createMeeting(MeetingDto meetingDto){
+		
+		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
+		
+		DepartureEntity departure=new DepartureEntity();
+		departure.setId(meetingDto.getDepartureId());
+		
+		UserEntity user=new UserEntity();
+		user.setId(meetingDto.getCreateUserId());
+		
+		meetingEntity.setDeparture(departure);
+		meetingEntity.setUser(user);
+		meetingDto= dozer.map(meetingEntity, MeetingDto.class);
 		meetingRepository.save(meetingEntity);
 	}
 	
@@ -53,7 +66,9 @@ public class MeetingService {
 		users.add(user);
 		meetingEntity.setId(meetingId);
 		meetingEntity.setUsers(users);
+		
 		meetingRepository.save(meetingEntity);
+		
 		
 	}
 	
