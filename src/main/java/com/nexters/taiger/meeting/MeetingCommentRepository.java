@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface MeetingCommentRepository extends CrudRepository<MeetingCommentEntity, Integer> {
 
 	
-	List<MeetingCommentDto> findAllByMeetingId(int meetingId);
-	void deleteByIdAndMeetingId(int id,int meetingId);
+	List<MeetingCommentEntity> findAllByMeetingId(int meetingId);
+	
 }

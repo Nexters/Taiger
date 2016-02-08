@@ -1,8 +1,10 @@
 package com.nexters.taiger.meeting;
 // Generated 2016. 1. 23 ���� 3:44:35 by Hibernate Tools 4.0.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -38,6 +40,8 @@ import lombok.Setter;
 @Table(name = "meeting", catalog = "taiger")
 public class MeetingEntity implements java.io.Serializable {
 
+	
+	
 	/**
 	 * 
 	 */
@@ -78,8 +82,6 @@ public class MeetingEntity implements java.io.Serializable {
 	@Column(name = "dest_name", length = 128)
 	private String destName;
 	
-	@Column(name = "cost_type")
-	private Integer costType;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", length = 19)
@@ -92,5 +94,5 @@ public class MeetingEntity implements java.io.Serializable {
 	@JoinTable(name = "meeting_user", catalog = "taiger", joinColumns = {
 			@JoinColumn(name = "meeting_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "user_id", nullable = false, updatable = false) })
-	private Set<UserEntity> users = new HashSet<UserEntity>(0);
+	private List<UserEntity> users = new ArrayList<UserEntity>(0);
 }

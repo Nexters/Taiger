@@ -30,6 +30,23 @@ import lombok.Setter;
 @Table(name = "meeting_comment", catalog = "taiger")
 public class MeetingCommentEntity implements java.io.Serializable {
 
+	public MeetingCommentEntity(){
+		
+	}
+	
+	public MeetingCommentEntity(MeetingCommentDto meetingCommentDto){
+		this.id=meetingCommentDto.getId();
+		
+		this.user=new UserEntity();
+		this.user.setId(meetingCommentDto.getUserId());
+		
+		this.meeting=new MeetingEntity();
+		this.meeting.setId(meetingCommentDto.getMeetingId());
+		
+		this.content=meetingCommentDto.getContent();
+		this.createdAt=meetingCommentDto.getCreatedAt();
+	
+	}
 	/**
 	 * 
 	 */
@@ -47,6 +64,7 @@ public class MeetingCommentEntity implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)	
 	private UserEntity user;
+	
 	
 	@Column(name = "content", length = 512)
 	private String content;

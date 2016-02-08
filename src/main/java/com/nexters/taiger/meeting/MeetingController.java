@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.nexters.taiger.common.AccessTokenDto;
 import com.nexters.taiger.common.constant.UserSortType;
+import com.nexters.taiger.common.exception.MeetingRoomFullException;
 import com.nexters.taiger.user.UserDto;
+
 
 
 
@@ -71,13 +73,11 @@ public class MeetingController {
 	 * @param meetingId
      * @return
      */
-	@RequestMapping(value="/meeting/{meetingId}", method=RequestMethod.POST)
-	public MeetingDto enterMeeting(AccessTokenDto authUser,@PathVariable int meetingId){
+	@RequestMapping(value="/meeting/{meetingId}", method=RequestMethod.GET)
+	public MeetingDto enterMeeting(AccessTokenDto authUser, @PathVariable int meetingId){
 		
-		int userId=authUser.getId();
-		meetingService.enterMeeting(userId, meetingId);
 		
-		return null;
+		return meetingService.enterMeeting(meetingId);
 	}
 
 	/**
@@ -100,7 +100,11 @@ public class MeetingController {
 	 * @return
 	 */
 	@RequestMapping(value="/meeting/{meetingId}/join", method=RequestMethod.POST)
-	public List<UserDto> joinMeetingUser(AccessTokenDto authUser, @PathVariable long meetingId){
+	public List<UserDto> joinMeetingUser(AccessTokenDto authUser, @PathVariable int meetingId) throws MeetingRoomFullException{
+		
+		int userId=authUser.getId();
+		meetingService.joinMeetingUser(userId, meetingId);
+		
 		return null;
 	}
 
@@ -128,6 +132,7 @@ public class MeetingController {
 	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable int meetingId){
 		
 		List<MeetingCommentDto> list=meetingService.getMeetingComments(meetingId);
+		
 		return list;
 	}
 
@@ -140,8 +145,10 @@ public class MeetingController {
 	@RequestMapping(value="/meeting/{meetingId}/comment", method=RequestMethod.POST)
 	public List<MeetingCommentDto> getMeetingComments(AccessTokenDto authUser, @PathVariable int meetingId, @RequestBody MeetingCommentDto meetingCommentDto){
 		
+		
 		meetingCommentDto.setMeetingId(meetingId);
-		MeetingCommentEntity entity=dozer.map(meetingCommentDto, MeetingCommentEntity.class);
+		
+		MeetingCommentEntity entity=new MeetingCommentEntity(meetingCommentDto);
 		
 		List<MeetingCommentDto> list=meetingService.saveComment(meetingId,entity);
 		

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nexters.taiger.common.constant.UserSortType;
+import com.nexters.taiger.common.exception.MeetingRoomFullException;
 import com.nexters.taiger.common.util.DozerHelper;
 import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.user.UserDto;
@@ -29,6 +30,8 @@ public class MeetingService {
 	
 	@Autowired
 	private DozerBeanMapper dozer;
+	
+	
 	
 	public void createMeeting(MeetingDto meetingDto){
 		
@@ -56,15 +59,29 @@ public class MeetingService {
 		return null;
 	}
 	
-	public void enterMeeting(int userId, int meetingId){
+	public MeetingDto enterMeeting(int meetingId){
 		
 		
-		MeetingEntity meetingEntity=new MeetingEntity();
+		MeetingEntity meetingEntity=meetingRepository.findOne(meetingId);
+		
+		
+		
+		return dozer.map(meetingEntity, MeetingDto.class);
+	}
+	
+	public void joinMeetingUser(int userId, int meetingId) throws MeetingRoomFullException{
+		
+		MeetingEntity meetingEntity=meetingRepository.findOne(meetingId);
+		
+		if(meetingEntity.getMaxUser() <= meetingEntity.getUsers().size()){
+			throw new MeetingRoomFullException("Meeting room is full");
+		}
+		
 		UserEntity user =new UserEntity();
 		user.setId(userId);
-		Set<UserEntity> users=new HashSet<UserEntity>();
+		List<UserEntity> users=meetingEntity.getUsers();
 		users.add(user);
-		meetingEntity.setId(meetingId);
+		
 		meetingEntity.setUsers(users);
 		
 		meetingRepository.save(meetingEntity);
@@ -76,11 +93,10 @@ public class MeetingService {
 		
 		
 		MeetingEntity meetingEntity=meetingRepository.findOne(meetingId);
-		Set<UserEntity> users=meetingEntity.getUsers();
-		List<UserDto> list=new ArrayList<UserDto>();
-		for(UserEntity user: users){
-			list.add(dozer.map(user, UserDto.class));
-		}
+		List<UserEntity> users=meetingEntity.getUsers();
+		List<UserDto> list=DozerHelper.map(dozer, users, UserDto.class);
+		
+		
 		
 		
 		
@@ -89,21 +105,23 @@ public class MeetingService {
 	
 	public void cancelMeetingUser(int userId,int meetingId){
 		
-		MeetingEntity meetingEntity=new MeetingEntity();
-		UserEntity user=new UserEntity();
-		user.setId(userId);
-		meetingEntity.setId(meetingId);
-		Set<UserEntity> users=meetingEntity.getUsers();
-		users.add(user);
-		meetingEntity.setUsers(users);
-		meetingRepository.delete(meetingEntity);
+		MeetingEntity meetingEntity=meetingRepository.findOne(meetingId);
+		List<UserEntity> users=meetingEntity.getUsers();
+		for(int i=0;i<users.size();i++){
+			if(users.get(i).getId()==userId){
+				users.remove(i);
+				break;
+			}
+		}
+		
+		meetingRepository.save(meetingEntity);
 	}
 	
 	public List<MeetingCommentDto> getMeetingComments(int meetingId){
 		
-		List<MeetingCommentDto> meetingCommentDto=meetingCommentRepository.findAllByMeetingId(meetingId);
+		List<MeetingCommentEntity> meetingCommentList=meetingCommentRepository.findAllByMeetingId(meetingId);
 		
-		return meetingCommentDto;
+		return DozerHelper.map(dozer, meetingCommentList, MeetingCommentDto.class);
 	}
 	
 	public List<MeetingCommentDto> saveComment(int meetingId,MeetingCommentEntity meetingCommentEntity){
@@ -115,7 +133,13 @@ public class MeetingService {
 	
 	public List<MeetingCommentDto> deleteMeetingComments(int commentId,int meetingId){
 		
-		meetingCommentRepository.deleteByIdAndMeetingId(commentId, meetingId);
+		MeetingCommentEntity meetingCommentEntity=new MeetingCommentEntity();
+		meetingCommentEntity.setId(commentId);
+		
+		MeetingEntity meeting=new MeetingEntity();
+		meeting.setId(meetingId);
+		meetingCommentEntity.setMeeting(meeting);
+		meetingCommentRepository.delete(meetingCommentEntity);
 		
 		return getMeetingComments(meetingId);
 	}
