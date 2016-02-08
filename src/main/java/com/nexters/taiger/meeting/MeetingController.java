@@ -2,10 +2,15 @@ package com.nexters.taiger.meeting;
 
 import com.nexters.taiger.common.AccessTokenDto;
 import com.nexters.taiger.common.constant.UserSortType;
+import com.nexters.taiger.departure.DepartureDto;
+import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.user.UserDto;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
+
+import com.nexters.taiger.common.util.*;
 
 import java.util.List;
 
@@ -19,6 +24,8 @@ public class MeetingController {
 
 	@Autowired
 	private DozerBeanMapper dozer;
+	
+	
 
 	/**
 	 * 미팅목록조회 / 정렬
@@ -26,8 +33,13 @@ public class MeetingController {
 	 * @param sortType
      */
 	@RequestMapping(value="/meetings",method =RequestMethod.GET)
-	public List<MeetingDto> getMeetings(AccessTokenDto authUser, UserSortType sortType) {
-		return null;
+	public List<MeetingDto> getMeetings(MeetingDto meetingDto,AccessTokenDto authUser, UserSortType sortType) {
+		MeetingEntity meetingEntity=dozer.map(meetingDto, MeetingEntity.class);
+		
+		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingEntity);
+		
+		
+		return meetingList;
 	}
 
 	/**

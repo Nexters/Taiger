@@ -6,6 +6,7 @@ package com.nexters.taiger.common.constant;
 public enum UserSortType {
     DEPARTURE,
     RECENTLY,
-    RELIABLITY
+    RELIABLITY,
+    approach
 
 }
