@@ -30,4 +30,6 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 	  @Query("SELECT id,departure_id,dest_name,created_at FROM meeting WHERE departure_id =?1 ORDER BY created_at ASC")
 	  ArrayList<MeetingEntity> findAllByDeparture_id(MeetingEntity meetingEntity);
 	
+
+	
 }

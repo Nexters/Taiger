@@ -4,6 +4,9 @@ package com.nexters.taiger.meeting;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
+import com.nexters.taiger.user.UserDto;
 
 @Data
 public class MeetingDto {
@@ -19,4 +22,8 @@ public class MeetingDto {
 	private String destName;
 	private Integer costType;
 	private Date createdAt;
+	private Double depLat;
+	private Double depLng;
+	private String depName;
+	private List<UserDto> users;
 }
