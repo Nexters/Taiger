@@ -71,7 +71,7 @@ public class MeetingService {
 		    System.out.println(departure_id);
 			meeting=meetingRepository.findAllByDeparture_id(departure_id);
 		    //meeting=(List<MeetingEntity>)meetingRepository.findAll();
-			System.out.println("dfkldf");
+			
 			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 			
 		}

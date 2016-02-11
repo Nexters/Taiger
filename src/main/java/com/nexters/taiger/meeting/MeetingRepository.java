@@ -27,7 +27,7 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 
 	  
 	  //임박순
-	  @Query(value="SELECT `id`,`departure_id`,`dest_name`,`created_at` FROM meeting WHERE `departure_id` =?1 ORDER BY `created_at` ASC",nativeQuery =true)
+	  @Query(value="SELECT id,dest_name,created_at FROM meeting WHERE departure_id =?1", nativeQuery =true)
 	  List<MeetingEntity> findAllByDeparture_id(int departure_id);
 	
 
