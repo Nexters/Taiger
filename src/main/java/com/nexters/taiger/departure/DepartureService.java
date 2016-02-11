@@ -1,7 +1,10 @@
 package com.nexters.taiger.departure;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nexters.taiger.common.util.DozerHelper;
 
 import java.util.List;
 
@@ -11,13 +14,16 @@ import java.util.List;
 @Service
 public class DepartureService {
 	@Autowired
-	private DepartureRepository helloRepository;
+	private DepartureRepository departureRepository;
 
-	public DepartureEntity getHello(){
-		return helloRepository.findOne(1);
-	}
+	@Autowired
+	private DozerBeanMapper dozer;
+	
 
 	public List<DepartureDto> getDepartures() {
-		return null;
+		
+		List<DepartureEntity> list=(List<DepartureEntity>)departureRepository.findAll();
+		
+		return DozerHelper.map(dozer, list, DepartureDto.class);
 	}
 }
