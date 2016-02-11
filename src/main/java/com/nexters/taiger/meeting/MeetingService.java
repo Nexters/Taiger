@@ -22,6 +22,7 @@ import com.nexters.taiger.user.UserEntity;
  */
 @Service
 public class MeetingService {
+	
 	@Autowired
 	private MeetingRepository meetingRepository;
 	
@@ -51,6 +52,9 @@ public class MeetingService {
 		 meetingRepository.delete(meetingEntity);
 	 }
 	
+    
+    
+
 
 	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
 		UserSortType sort=null;
@@ -70,13 +74,19 @@ public class MeetingService {
 			}
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 		}else if(sortType==sort.RECENTLY){
+
 			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
 			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+
+			meeting=meetingRepository.findAllByDepartureId(meetingId);
+
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+
 			
 		}
 		
 		
+
 		return meetingDto;
 
 	}

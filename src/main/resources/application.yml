@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/taiger?useUnicode=true&characterEncoding=utf8
-    username: taiger
-    password: taiger!@#
+    url: jdbc:mysql://localhost:3306/taiger?characterEncoding=UTF8
+    username: root
+    password: apmsetup
    
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
