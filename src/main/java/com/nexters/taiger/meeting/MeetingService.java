@@ -31,8 +31,6 @@ public class MeetingService {
 	@Autowired
 	private DozerBeanMapper dozer;
 	
-	
-	
 	public void createMeeting(MeetingDto meetingDto){
 		
 		MeetingEntity meetingEntity = dozer.map(meetingDto, MeetingEntity.class);
@@ -49,15 +47,33 @@ public class MeetingService {
 		meetingRepository.save(meetingEntity);
 	}
 	
-	
     public void deleteMeeting(MeetingEntity meetingEntity){
 		 meetingRepository.delete(meetingEntity);
 	 }
 	
-	public List<MeetingEntity> getMeetings(UserSortType sortType){
-		//List<MeetingEntity> meeting=meetingRepository.findAllOrderByCreatedAtDesc(createAt)
-		return null;
+
+	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
+		UserSortType sort=null;
+		List<MeetingDto> meetingDto=null;
+		ArrayList<MeetingEntity> meeting=null;
+		if(sortType==sort.DEPARTURE){
+			meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
+			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+		}else if(sortType==sort.approach){
+			meeting=meetingRepository.findAllByDeparture_id(meetingEntity);
+			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+			
+		}
+		
+		meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+		return meetingDto;
+
 	}
+
+
+
+
+	
 	
 	public MeetingDto enterMeeting(int meetingId){
 		
