@@ -47,9 +47,11 @@ public class MeetingController {
 	public List<MeetingDto> getMeetings(MeetingDto meetingDto,UserSortType sortType) {
 		MeetingEntity meetingEntity=dozer.map(meetingDto, MeetingEntity.class);
 
-		sortType=UserSortType.RECENTLY;
-		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingDto.getDepartureId());
-
+		sortType=UserSortType.DEPARTURE;
+	
+		
+		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingDto.getDepartureId(),meetingDto.getDestName());
+		
 		
 		
 		return meetingList;
