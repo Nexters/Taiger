@@ -7,6 +7,5 @@ public enum UserSortType {
     DEPARTURE,
     RECENTLY,
     RELIABLITY
-    
 
 }

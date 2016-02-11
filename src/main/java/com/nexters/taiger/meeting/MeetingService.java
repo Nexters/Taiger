@@ -56,26 +56,31 @@ public class MeetingService {
     
 
 
-	public List<MeetingDto> getMeeting(UserSortType sortType,int departureId,String destName){
-		
+
+	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
+		UserSortType sort=null;
 		List<MeetingDto> meetingDto=null;
 		List<MeetingEntity> meeting=null;
-		if(sortType==UserSortType.DEPARTURE){
-		
-			meeting=meetingRepository.findAllByDepartureIdAndDestName(departureId);
-			System.out.println(meeting);
+		if(sortType==sort.DEPARTURE){
+			List<MeetingSearch>meetingSearch=meetingRepository.findAllByDepartureIdAndDestName(meetingEntity.getDeparture().getId(),meetingEntity.getDestName());
 			
-		}else if(sortType==UserSortType.RECENTLY){
-			System.out.println(departureId);
-			meeting=meetingRepository.findAllByDepartureId(departureId);
 			
+			
+			meetingDto=DozerHelper.map(dozer, meetingSearch, MeetingDto.class);
+		}else if(sortType==sort.RECENTLY){
+
+			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
+			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+
+			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
+
+			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 
 			
 		}
 		
 		
-		
-		meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+
 		return meetingDto;
 
 	}
