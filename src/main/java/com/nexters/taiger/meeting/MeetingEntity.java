@@ -22,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.tomcat.jni.User;
+
 import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.user.UserEntity;
 
@@ -34,12 +36,44 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "meeting", catalog = "taiger")
 public class MeetingEntity implements java.io.Serializable {
 
+	private int search;
+	public MeetingEntity(){
+		
+	}
+	public MeetingEntity(int id){
+		this.id=id;
+	}
+	public MeetingEntity(int id,int departureId,String destName,Date createdAt,int search){
+		this.id=id;
+		this.departure=new DepartureEntity();
+		departure.setId(departureId);
+		this.destName=destName;
+		this.createdAt=createdAt;
+		this.search=search;
+	}
+	public MeetingEntity(MeetingDto meetingDto){
+		this.id=meetingDto.getId();
+		this.user=new UserEntity();
+		user.setId(meetingDto.getCreateUserId());
+		this.departure=new DepartureEntity();
+		departure.setId(meetingDto.getDepartureId());
+		this.title=meetingDto.getTitle();
+		this.startDate=meetingDto.getStartDate();
+		this.genderType=meetingDto.getGenderType();
+		this.maxUser=meetingDto.getMaxUser();
+		this.depLat=meetingDto.getDepLat();
+		this.depLng=meetingDto.getDepLng();
+		this.depName=meetingDto.getDepName();
+		this.destLat=meetingDto.getDestLat();
+		this.destLng=meetingDto.getDestLng();
+		this.destName=meetingDto.getDestName();
+		this.createdAt=meetingDto.getCreatedAt();
+	}
 	
 	
 	/**

@@ -52,20 +52,31 @@ public class MeetingService {
 	 }
 	
 
-	public List<MeetingDto> getMeeting(UserSortType sortType,int meetingId){
+	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
 		UserSortType sort=null;
 		List<MeetingDto> meetingDto=null;
 		List<MeetingEntity> meeting=null;
 		if(sortType==sort.DEPARTURE){
-			//meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
+			meeting=meetingRepository.findAllByDepartureIdAndDestName(meetingEntity.getDeparture().getId(),meetingEntity.getDestName());
+			
+			meetingDto=new ArrayList<MeetingDto>();
+			for(MeetingEntity value : meeting){
+				MeetingDto meet=new MeetingDto();
+				meet.setId(value.getId());
+				meet.setDepartureId(value.getDeparture().getId());
+				meet.setDestName(value.getDestName());
+				meet.setSearch(value.getSearch());
+				meetingDto.add(meet);
+			}
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
-		}else if(sortType==sort.approach){
-			meeting=meetingRepository.findAllByDepartureId(meetingId);
+		}else if(sortType==sort.RECENTLY){
+			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
+			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 			
 		}
 		
-		meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+		
 		return meetingDto;
 
 	}

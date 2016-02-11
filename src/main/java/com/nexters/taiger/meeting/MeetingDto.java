@@ -26,4 +26,5 @@ public class MeetingDto {
 	private Double depLng;
 	private String depName;
 	private List<UserDto> users;
+	private int search;
 }

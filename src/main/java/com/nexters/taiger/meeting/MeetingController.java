@@ -45,9 +45,9 @@ public class MeetingController {
      */
 	@RequestMapping(value="/meetings",method =RequestMethod.GET)
 	public List<MeetingDto> getMeetings(MeetingDto meetingDto,UserSortType sortType) {
-		MeetingEntity meetingEntity=dozer.map(meetingDto, MeetingEntity.class);
-		sortType=UserSortType.approach;
-		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingDto.getDepartureId());
+		MeetingEntity meetingEntity=new MeetingEntity(meetingDto);
+		sortType=UserSortType.DEPARTURE;
+		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingEntity);
 		
 		
 		return meetingList;

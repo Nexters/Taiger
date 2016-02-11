@@ -22,8 +22,8 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 
 
 	  //기본정렬
-	  //@Query("SELECT id, departure_id, dest_name, created_at,(CASE WHEN departure_id = ?1 AND dest_name = ?2 THEN 1 ELSE 0 END) search  FROM meeting WHERE departure_id =?1 ORDER BY search DESC, created_at ASC")
-	  //ArrayList<MeetingEntity> findAllByDeparture_idEndDest_name(MeetingEntity meetingEntity);
+	  @Query("SELECT new MeetingEntity(m.id, m.departure.id, m.destName, m.createdAt,(CASE WHEN m.departure.id = ?1 AND m.destName = ?2 THEN 1 ELSE 0 END) as search)  FROM MeetingEntity m WHERE m.departure.id =?1 ORDER BY search DESC, m.createdAt ASC")
+	  List<MeetingEntity> findAllByDepartureIdAndDestName(int departureId,String destName);
 
 	  
 	  //임박순
