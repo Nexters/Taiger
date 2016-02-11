@@ -22,13 +22,13 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 
 
 	  //기본정렬
-	  @Query("SELECT id, departure_id, dest_name, created_at,(CASE WHEN departure_id = ?1 AND dest_name = ?2 THEN 1 ELSE 0 END) search  FROM meeting WHERE departure_id =?1 ORDER BY search DESC, created_at ASC")
-	  ArrayList<MeetingEntity> findAllByDeparture_idEndDest_name(MeetingEntity meetingEntity);
+	  @Query(value="SELECT id, departure_id, dest_name, created_at,(CASE WHEN departure_id = ?1 AND dest_name = ?2 THEN 1 ELSE 0 END) search  FROM meeting WHERE departure_id =?1 ORDER BY search DESC, created_at ASC", nativeQuery =true)
+	  ArrayList<MeetingEntity> findAllByDeparture_idEndDest_name(int departure_id,String dest_name);
 
 	  
 	  //임박순
-	  @Query("SELECT id,departure_id,dest_name,created_at FROM meeting WHERE departure_id =?1 ORDER BY created_at ASC")
-	  ArrayList<MeetingEntity> findAllByDeparture_id(MeetingEntity meetingEntity);
+	  @Query(value="SELECT `id`,`departure_id`,`dest_name`,`created_at` FROM meeting WHERE `departure_id` =?1 ORDER BY `created_at` ASC",nativeQuery =true)
+	  List<MeetingEntity> findAllByDeparture_id(int departure_id);
 	
 
 	

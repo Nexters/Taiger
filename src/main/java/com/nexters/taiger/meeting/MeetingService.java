@@ -22,6 +22,7 @@ import com.nexters.taiger.user.UserEntity;
  */
 @Service
 public class MeetingService {
+	
 	@Autowired
 	private MeetingRepository meetingRepository;
 	
@@ -51,19 +52,31 @@ public class MeetingService {
 		 meetingRepository.delete(meetingEntity);
 	 }
 	
+    
+    
 
-	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
+	public List<MeetingDto> getMeeting(UserSortType sortType,int departure_id,String dest_name){
 		UserSortType sort=null;
 		List<MeetingDto> meetingDto=null;
-		ArrayList<MeetingEntity> meeting=null;
+		List<MeetingEntity> meeting=null;
+		
+		//기본 정렬
 		if(sortType==sort.DEPARTURE){
-			meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
-			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
-		}else if(sortType==sort.approach){
-			meeting=meetingRepository.findAllByDeparture_id(meetingEntity);
-			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+			meeting=meetingRepository.findAllByDeparture_idEndDest_name(departure_id,dest_name);
+			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+		}else if(sortType==sort.RECENTLY){ //임박순=최신순
+	         System.out.println("---------------------------------------------");
+			System.out.println("1");
+		    System.out.println("---------------------------------------------");
+		    System.out.println(departure_id);
+			meeting=meetingRepository.findAllByDeparture_id(departure_id);
+		    //meeting=(List<MeetingEntity>)meetingRepository.findAll();
+			System.out.println("dfkldf");
+			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 			
 		}
+		
+		
 		
 		meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 		return meetingDto;
