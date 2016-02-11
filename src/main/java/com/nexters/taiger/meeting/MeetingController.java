@@ -47,7 +47,7 @@ public class MeetingController {
 	public List<MeetingDto> getMeetings(MeetingDto meetingDto,UserSortType sortType) {
 
 		MeetingEntity meetingEntity=new MeetingEntity(meetingDto);
-		sortType=UserSortType.DEPARTURE;
+		sortType=UserSortType.RECENTLY;
 		List<MeetingDto> meetingList=meetingService.getMeeting(sortType, meetingEntity);
 
 		

@@ -7,7 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+
+
 
 import org.apache.tomcat.jni.User;
 
@@ -41,22 +46,15 @@ import lombok.Setter;
 @Table(name = "meeting", catalog = "taiger")
 public class MeetingEntity implements java.io.Serializable {
 
-	private int search;
+	
+	
 	public MeetingEntity(){
+		super();
 		
 	}
-	public MeetingEntity(int id){
-		this.id=id;
-	}
-	public MeetingEntity(int id,int departureId,String destName,Date createdAt,int search){
-		this.id=id;
-		this.departure=new DepartureEntity();
-		departure.setId(departureId);
-		this.destName=destName;
-		this.createdAt=createdAt;
-		this.search=search;
-	}
+	
 	public MeetingEntity(MeetingDto meetingDto){
+		super();
 		this.id=meetingDto.getId();
 		this.user=new UserEntity();
 		user.setId(meetingDto.getCreateUserId());

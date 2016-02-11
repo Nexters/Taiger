@@ -20,8 +20,8 @@ public interface MeetingRepository extends CrudRepository<MeetingEntity, Integer
 
 	  //기본정렬
 
-	  @Query("SELECT new MeetingEntity(m.id, m.departure.id, m.destName, m.createdAt,(CASE WHEN m.departure.id = ?1 AND m.destName = ?2 THEN 1 ELSE 0 END) as search)  FROM MeetingEntity m WHERE m.departure.id =?1 ORDER BY search DESC, m.createdAt ASC")
-	  List<MeetingEntity> findAllByDepartureIdAndDestName(int departureId,String destName);
+	  @Query("SELECT new com.nexters.taiger.meeting.MeetingSearch(m.id, m.departure.id, m.destName, m.createdAt,(CASE WHEN m.departure.id = ?1 AND m.destName = ?2 THEN 1 ELSE 0 END) as search)  FROM MeetingEntity m WHERE m.departure.id =?1 ORDER BY search DESC, m.createdAt ASC")
+	  List<MeetingSearch> findAllByDepartureIdAndDestName(int departureId,String destName);
 
 
 	  

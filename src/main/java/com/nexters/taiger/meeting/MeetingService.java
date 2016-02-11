@@ -61,24 +61,17 @@ public class MeetingService {
 		List<MeetingDto> meetingDto=null;
 		List<MeetingEntity> meeting=null;
 		if(sortType==sort.DEPARTURE){
-			meeting=meetingRepository.findAllByDepartureIdAndDestName(meetingEntity.getDeparture().getId(),meetingEntity.getDestName());
+			List<MeetingSearch>meetingSearch=meetingRepository.findAllByDepartureIdAndDestName(meetingEntity.getDeparture().getId(),meetingEntity.getDestName());
 			
-			meetingDto=new ArrayList<MeetingDto>();
-			for(MeetingEntity value : meeting){
-				MeetingDto meet=new MeetingDto();
-				meet.setId(value.getId());
-				meet.setDepartureId(value.getDeparture().getId());
-				meet.setDestName(value.getDestName());
-				meet.setSearch(value.getSearch());
-				meetingDto.add(meet);
-			}
-			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+			
+			
+			meetingDto=DozerHelper.map(dozer, meetingSearch, MeetingDto.class);
 		}else if(sortType==sort.RECENTLY){
 
 			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
 			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 
-			meeting=meetingRepository.findAllByDepartureId(meetingId);
+			meeting=meetingRepository.findAllByDepartureId(meetingEntity.getDeparture().getId());
 
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 
