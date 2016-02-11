@@ -22,7 +22,8 @@ public class DepartureController {
 	 * @return
      */
 	@RequestMapping("/departures")
-	public List<DepartureDto> getDepartures(AccessTokenDto authUser) {
-		return null;
+	public List<DepartureDto> getDepartures() {
+		
+		return departureService.getDepartures();
 	}
 }
