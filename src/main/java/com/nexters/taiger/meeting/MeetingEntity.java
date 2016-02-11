@@ -73,6 +73,15 @@ public class MeetingEntity implements java.io.Serializable {
 	@Column(name = "max_user")
 	private Integer maxUser;
 	
+	@Column(name = "dep_lat", precision = 22, scale = 0)
+	private Double depLat;
+	
+	@Column(name = "dep_lng", precision = 22, scale = 0)
+	private Double depLng;
+	
+	@Column(name = "dep_name", length = 128)
+	private String depName;
+	
 	@Column(name = "dest_lat", precision = 22, scale = 0)
 	private Double destLat;
 	
