@@ -52,15 +52,15 @@ public class MeetingService {
 	 }
 	
 
-	public List<MeetingDto> getMeeting(UserSortType sortType,MeetingEntity meetingEntity){
+	public List<MeetingDto> getMeeting(UserSortType sortType,int meetingId){
 		UserSortType sort=null;
 		List<MeetingDto> meetingDto=null;
-		ArrayList<MeetingEntity> meeting=null;
+		List<MeetingEntity> meeting=null;
 		if(sortType==sort.DEPARTURE){
-			meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
+			//meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 		}else if(sortType==sort.approach){
-			meeting=meetingRepository.findAllByDeparture_id(meetingEntity);
+			meeting=meetingRepository.findAllByDepartureId(meetingId);
 			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
 			
 		}
