@@ -55,24 +55,18 @@ public class MeetingService {
     
     
 
-	public List<MeetingDto> getMeeting(UserSortType sortType,int departure_id,String dest_name){
+
+	public List<MeetingDto> getMeeting(UserSortType sortType,int meetingId){
 		UserSortType sort=null;
 		List<MeetingDto> meetingDto=null;
 		List<MeetingEntity> meeting=null;
-		
-		//기본 정렬
 		if(sortType==sort.DEPARTURE){
-			meeting=meetingRepository.findAllByDeparture_idEndDest_name(departure_id,dest_name);
-			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
-		}else if(sortType==sort.RECENTLY){ //임박순=최신순
-	         System.out.println("---------------------------------------------");
-			System.out.println("1");
-		    System.out.println("---------------------------------------------");
-		    System.out.println(departure_id);
-			meeting=meetingRepository.findAllByDeparture_id(departure_id);
-		    //meeting=(List<MeetingEntity>)meetingRepository.findAll();
-			
-			meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+			//meeting=meetingRepository.findAllByDeparture_idEndDest_name(meetingEntity);
+			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+		}else if(sortType==sort.RECENTLY){
+			meeting=meetingRepository.findAllByDepartureId(meetingId);
+			//meetingDto=DozerHelper.map(dozer, meeting, MeetingDto.class);
+
 			
 		}
 		
