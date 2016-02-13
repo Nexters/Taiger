@@ -27,8 +27,12 @@ import javax.persistence.TemporalType;
 
 
 
+
+
 import org.apache.tomcat.jni.User;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.user.UserEntity;
 
@@ -38,7 +42,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@EqualsAndHashCode
+
 @Getter
 @Setter
 @AllArgsConstructor

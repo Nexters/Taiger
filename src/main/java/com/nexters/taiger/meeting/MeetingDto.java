@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nexters.taiger.user.UserDto;
 
 @Data

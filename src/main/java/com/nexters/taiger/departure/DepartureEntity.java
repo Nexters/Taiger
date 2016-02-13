@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nexters.taiger.meeting.MeetingEntity;
 import com.nexters.taiger.meeting.MeetingCommentEntity;
 import com.nexters.taiger.user.UserEntity;
@@ -24,7 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@EqualsAndHashCode
+
 @Getter
 @Setter
 @NoArgsConstructor

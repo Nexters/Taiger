@@ -94,10 +94,12 @@ public class MeetingService {
 		
 		
 		MeetingEntity meetingEntity=meetingRepository.findOne(meetingId);
+		MeetingDto meetingDto=dozer.map(meetingEntity, MeetingDto.class);
+		meetingDto.setCreateUserId(meetingEntity.getUser().getId());
+		meetingDto.setDepartureId(meetingEntity.getDeparture().getId());
 		
 		
-		
-		return dozer.map(meetingEntity, MeetingDto.class);
+		return meetingDto;
 	}
 	
 	public void joinMeetingUser(int userId, int meetingId) throws MeetingRoomFullException{
@@ -151,8 +153,17 @@ public class MeetingService {
 	public List<MeetingCommentDto> getMeetingComments(int meetingId){
 		
 		List<MeetingCommentEntity> meetingCommentList=meetingCommentRepository.findAllByMeetingId(meetingId);
-		
-		return DozerHelper.map(dozer, meetingCommentList, MeetingCommentDto.class);
+		List<MeetingCommentDto> meetingCommentDtoList=new ArrayList<>();
+		for(MeetingCommentEntity value : meetingCommentList){
+			MeetingCommentDto meetingComment=new MeetingCommentDto();
+			meetingComment.setId(value.getId());
+			meetingComment.setMeetingId(value.getMeeting().getId());
+			meetingComment.setContent(value.getContent());
+			meetingComment.setUserId(value.getUser().getId());
+			meetingComment.setCreatedAt(value.getCreatedAt());
+			meetingCommentDtoList.add(meetingComment);
+		}
+		return meetingCommentDtoList;
 	}
 	
 	public List<MeetingCommentDto> saveComment(int meetingId,MeetingCommentEntity meetingCommentEntity){

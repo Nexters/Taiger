@@ -1,16 +1,20 @@
 package com.nexters.taiger.user;
 // Generated 2016. 1. 23 ���� 3:44:35 by Hibernate Tools 4.0.0
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nexters.taiger.departure.DepartureEntity;
 import com.nexters.taiger.meeting.MeetingCommentEntity;
 import com.nexters.taiger.meeting.MeetingEntity;
+
 import lombok.*;
 
 import javax.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode
+
 @Getter
 @Setter
 @NoArgsConstructor
