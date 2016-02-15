@@ -71,6 +71,11 @@ dependencies {
 
 	// guava
 	compile 'com.google.guava:guava:19.0'
+	
+	// gcm
+	compile 'com.ganyo:gcm-server:1.0.2'
+	
+	
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
