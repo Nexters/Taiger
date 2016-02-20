@@ -25,7 +25,7 @@ public class GcmService {
 		Sender sender = new Sender(apiKey); 
 		// GCM으로부터 발급받은 단말기 RegID 입력. 
 		String regId = " GCM으로부터 발급받은 단말기 RegID 입력.";
-		Message message = new Message.Builder().addData("msg", "push notify").build();
+		Message message = new Message.Builder().addData("msg", gcmDto.getMessage()).build();
 		
 		List<String> list = new ArrayList<String>();
 
@@ -34,6 +34,7 @@ public class GcmService {
 		MulticastResult multiResult;
 
 		try {
+	
 			multiResult = sender.send(message, list, 5);
 
 			if (multiResult != null) {

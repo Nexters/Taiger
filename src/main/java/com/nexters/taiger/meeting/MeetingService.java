@@ -142,6 +142,7 @@ public class MeetingService {
 		List<UserEntity> users=meetingEntity.getUsers();
 		for(int i=0;i<users.size();i++){
 			if(users.get(i).getId()==userId){
+				
 				users.remove(i);
 				break;
 			}

@@ -89,7 +89,7 @@ public class MeetingController {
 	}
 
 	/**
-	 * 미팅입장
+	 * 미팅입장    (댓글까지)
 	 * @param authUser
 	 * @param meetingId
      * @return
