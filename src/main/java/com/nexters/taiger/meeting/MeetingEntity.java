@@ -29,7 +29,9 @@ import javax.persistence.TemporalType;
 
 
 
+
 import org.apache.tomcat.jni.User;
+import org.springframework.data.jpa.repository.Query;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -137,7 +139,7 @@ public class MeetingEntity implements java.io.Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "meeting_user", catalog = "taiger", joinColumns = {
-			@JoinColumn(name = "meeting_id", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "user_id", nullable = false, updatable = false) })
+			@JoinColumn(name = "meeting_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "user_id", nullable = false) })
 	private List<UserEntity> users = new ArrayList<UserEntity>(0);
 }

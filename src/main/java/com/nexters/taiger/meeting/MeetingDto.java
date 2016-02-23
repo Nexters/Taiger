@@ -11,6 +11,20 @@ import com.nexters.taiger.user.UserDto;
 
 @Data
 public class MeetingDto {
+	
+	public MeetingDto(){
+		
+	}
+	
+	public MeetingDto(int id,int departureId,String destName,Date createdAt,int search){
+		this.id=id;
+		this.departureId=departureId;
+		this.destName=destName;
+		this.createdAt=createdAt;
+		this.search=search;
+	
+		
+	}
 	private int id;
 	private int createUserId;
 	private int departureId;

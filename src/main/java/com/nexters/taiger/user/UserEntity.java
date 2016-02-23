@@ -60,8 +60,8 @@ public class UserEntity implements java.io.Serializable {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "meeting_user", catalog = "taiger", joinColumns = {
-			@JoinColumn(name = "user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "meeting_id", nullable = false, updatable = false) })
+			@JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "meeting_id", nullable = false) })
 	private Set<MeetingEntity> meetings = new HashSet<MeetingEntity>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
